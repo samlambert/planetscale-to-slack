@@ -60,7 +60,7 @@ app.post('/webhook', async (req, res) => {
         break;
 
         case 'deploy_request.errored':
-            await sendSlackMessage(`${data.resource.actor.display_name} has errored`);
+            await sendSlackMessage(`<${data.resource.html_url}|${data.resource.branch}> has errored`);
         break;
     
         case 'deploy_request.reverted':

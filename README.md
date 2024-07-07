@@ -21,7 +21,7 @@ This version of the PlanetScale is the right size for a Slack app logo:
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome. Feel free to submit a Pull Request.
 
 ## License
 
