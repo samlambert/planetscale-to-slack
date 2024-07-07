@@ -1,6 +1,6 @@
 # PlanetScale-to-Slack
 
-A project to connect PlanetScale database events to Slack notifications.
+A app to connect PlanetScale database events to Slack notifications.
 
 ![PlanetScale to Slack](https://github.com/samlambert/planetscale-to-slack/assets/1155781/478d465f-0ca4-4312-a6e3-944bae6612ae)
 
