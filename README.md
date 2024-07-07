@@ -2,7 +2,7 @@
 
 A project to connect PlanetScale database events to Slack notifications.
 
-![PlanetScale to Slack](https://github.com/samlambert/requestspersecond.fyi/assets/1155781/60702007-0e78-4f0f-bf99-1653108c2c79)
+![PlanetScale to Slack](https://github.com/samlambert/planetscale-to-slack/assets/1155781/478d465f-0ca4-4312-a6e3-944bae6612ae)
 
 ## Setup
 

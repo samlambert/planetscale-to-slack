@@ -71,6 +71,10 @@ app.post('/webhook', async (req, res) => {
             await sendSlackMessage(`${data.resource.actor.display_name} has closed <${data.resource.html_url}|${data.resource.branch}>`);
         break;
 
+        case 'branch.anomaly':
+          await sendSlackMessage(`:warning:  <https://app.planetscale.com/${data.organization}/${data.database}/${data.resource.parent_branch}/insights/anomalies | Anomaly detected> on \`${data.database}/${data.resource.parent_branch}\``);
+        break;
+
         default:
             console.log(`Received an unknown event type: ${event.type}`);
         break;
