@@ -75,6 +75,10 @@ app.post('/webhook', async (req, res) => {
           await sendSlackMessage(`:warning:  <https://app.planetscale.com/${data.organization}/${data.database}/${data.resource.parent_branch}/insights/anomalies | Anomaly detected> on \`${data.database}/${data.resource.parent_branch}\``);
         break;
 
+        case 'webhook.test':
+          await sendSlackMessage(`Webhook test recieved from: \`${data.organization}/${data.database}\``);
+        break;
+
         default:
             console.log(`Received an unknown event type: ${event.type}`);
         break;
