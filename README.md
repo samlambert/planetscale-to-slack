@@ -18,7 +18,7 @@ A app to connect PlanetScale database events to Slack notifications.
 
 This version of the PlanetScale is the right size for a Slack app logo:
 
-![PlanetScale Logo](https://github.com/samlambert/requestspersecond.fyi/assets/1155781/491e706f-b53a-4812-91b9-67128677ff53)
+![PlanetScale Logo](misc/PlanetScale_logo.png)
 
 ## Contributing
 
