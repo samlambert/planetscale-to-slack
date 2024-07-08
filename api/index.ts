@@ -13,10 +13,6 @@ const webhookSecret = process.env.PLANETSCALE_WEBHOOK_SECRET;
 
 const slack = new WebClient(slackToken);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('no thank you');
-});
-
 async function sendSlackMessage(message: string) {
     if (!slackChannel) {
       throw new Error('SLACK_CHANNEL_ID is not defined');
@@ -28,6 +24,9 @@ async function sendSlackMessage(message: string) {
     });
   }
 
+app.get('/', (req: Request, res: Response) => {
+  res.send('no thank you');
+});
 
 app.post('/webhook', async (req, res) => {
   const signature = req.headers['planetscale-signature'];
@@ -38,8 +37,6 @@ app.post('/webhook', async (req, res) => {
 
   try {
     const data = req.body;
-
-    
     const event = data.event;
 
     switch (event) {
@@ -84,13 +81,11 @@ app.post('/webhook', async (req, res) => {
         break;
     }
 
-
     res.status(200).send('Webhook processed successfully');
   } catch (error) {
     console.error('Error processing webhook:', error);
     res.status(500).send('Error processing webhook');
   }
 });
-
 
 export default app;
