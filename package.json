@@ -2,6 +2,7 @@
   "name": "planetscale-to-slack",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node api/index.ts"
   },
@@ -12,7 +13,6 @@
   "dependencies": {
     "@slack/web-api": "^7.3.1",
     "dotenv": "^16.4.5",
-    "@types/node": "^20.14.10",
     "express": "^4.19.2"
   },
   "devDependencies": {
