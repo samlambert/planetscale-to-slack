@@ -13,7 +13,7 @@ A app to connect PlanetScale database events to Slack notifications.
   - `PLANETSCALE_WEBHOOK_SECRET`: The secret used to verify webhook requests
   - `SLACK_WEBHOOK_URL`: The URL of your Slack app
   - `SLACK_CHANNEL`: The name of the Slack channel to send messages to
-- To test your app is working you can send a [test webhook](https://planetscale.com/docs/concepts/webhooks#setting-up-a-webhook-in-planetscale) from PlanetScale and a message will be sent to slack.
+- To test your app is working you can send a [test webhook](https://planetscale.com/docs/concepts/webhooks#setting-up-a-webhook-in-planetscale) from PlanetScale and a message will be sent to Slack
 - Profit
 
 This version of the PlanetScale is the right size for a Slack app logo:
