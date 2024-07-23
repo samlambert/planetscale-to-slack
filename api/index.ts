@@ -1,3 +1,5 @@
+import fs from 'fs';
+import https from 'https';
 import express, { Request, Response } from "express";
 import { WebClient } from '@slack/web-api';
 import bodyParser from 'body-parser'
@@ -107,5 +109,17 @@ app.post('/webhook', async (req, res) => {
     res.status(500).send('Error processing webhook');
   }
 });
+
+if (process.env.MODE && process.env.MODE == 'standalone') {
+  const credentialsPath = process.env.CREDENTIALS_PATH;
+  
+  const privateKey = fs.readFileSync(`${credentialsPath}/privkey.pem`, 'utf8');
+  const certificate = fs.readFileSync(`${credentialsPath}/cert.pem`, 'utf8');
+  const ca = fs.readFileSync(`${credentialsPath}/chain.pem`, 'utf8');
+  const credentials = { key: privateKey, cert: certificate, ca: ca };
+  
+  const httpsServer = https.createServer(credentials, app);
+  httpsServer.listen(443, () => console.log('server started') );
+}
 
 export default app;
