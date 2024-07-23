@@ -1,14 +1,16 @@
 import express, { Request, Response } from "express";
 import { WebClient } from '@slack/web-api';
+import bodyParser from 'body-parser'
 import dotenv from 'dotenv';
+import crypto from 'crypto'
 
 dotenv.config();
 
 const app = express();
-app.use(express.json());
+app.use(bodyParser.raw({inflate:true, type: 'application/json'}));
 
 const slackToken = process.env.SLACK_BOT_TOKEN;
-const slackChannel = process.env.SLACK_CHANNEL_ID;
+const slackChannel = process.env.SLACK_CHANNEL;
 const webhookSecret = process.env.PLANETSCALE_WEBHOOK_SECRET;
 
 const slack = new WebClient(slackToken);
@@ -24,19 +26,29 @@ async function sendSlackMessage(message: string) {
     });
   }
 
+const verifySignature = (req: Request, secret: string): boolean => {
+  const signature = crypto.createHmac('sha256', secret).update(req.body).digest('hex');
+  const trusted = Buffer.from(signature, 'ascii');
+  const header = req.headers['x-planetscale-signature'];
+  if (header === undefined) {
+    return false;
+  }
+  const untrusted = Buffer.from(header)
+  return crypto.timingSafeEqual(trusted, untrusted);
+}
+
 app.get('/', (req: Request, res: Response) => {
   res.send('no thank you');
 });
 
 app.post('/webhook', async (req, res) => {
-  const signature = req.headers['planetscale-signature'];
 
-  if (!signature || signature !== webhookSecret) {
+  if (!verifySignature(req, webhookSecret)) {
     return res.status(401).send('Unauthorized');
   }
 
   try {
-    const data = req.body;
+    const data = JSON.parse(req.body);
     const event = data.event;
 
     switch (event) {
@@ -70,6 +82,14 @@ app.post('/webhook', async (req, res) => {
 
         case 'branch.anomaly':
           await sendSlackMessage(`:warning:  <https://app.planetscale.com/${data.organization}/${data.database}/${data.resource.parent_branch}/insights/anomalies | Anomaly detected> on \`${data.database}/${data.resource.parent_branch}\``);
+        break;
+
+        case 'branch.ready':
+          await sendSlackMessage(`<https://app.planetscale.com/${data.organization}/${data.database}/${data.resource.name} | Branch \`${data.resource.name}\` is ready >`);
+        break;
+
+        case 'branch.sleeping':
+          await sendSlackMessage(`<https://app.planetscale.com/${data.organization}/${data.database}/${data.resource.name} | Branch \`${data.resource.name}\` is sleeping >`);
         break;
 
         case 'webhook.test':
