@@ -40,6 +40,38 @@ This version of the PlanetScale is the right size for a Slack app logo:
 
 ![PlanetScale Logo](misc/PlanetScale_logo.png)
 
+## Database Optimization
+
+This project includes database migration capabilities to implement PlanetScale optimization recommendations safely.
+
+### Running Database Migrations
+
+If you need to apply database schema optimizations:
+
+1. Set up database environment variables in your `.env` file:
+   ```
+   DATABASE_HOST=your-planetscale-host.connect.psdb.cloud
+   DATABASE_USERNAME=your-username
+   DATABASE_PASSWORD=your-password
+   DATABASE_NAME=planetscale
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run migrations:
+   ```bash
+   npm run migrate
+   ```
+
+### Recent Optimizations
+
+- **Redundant Index Removal**: Removed `index_users_on_email` as it was redundant with the composite `index_users_on_email_and_status` index, saving 16384 bytes of storage while maintaining query performance.
+
+For more details, see the [migrations documentation](migrations/README.md).
+
 ## Contributing
 
 Contributions are welcome. Feel free to submit a Pull Request.
