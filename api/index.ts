@@ -100,8 +100,26 @@ app.post('/webhook', async (req, res) => {
 
         case 'branch.schema_recommendation':
           const recommendation = data.resource;
-          const recommendationType = recommendation.recommendation_type === 'new_index' ? 'new index' : recommendation.recommendation_type;
-          await sendSlackMessage(`:bulb: <${recommendation.html_url}|Schema recommendation #${recommendation.number}>: ${recommendation.title}\n• Type: ${recommendationType}\n• Table: \`${recommendation.table_name}\`\n• Branch: \`${data.database}/${recommendation.branch.name}\``);
+          if (!recommendation) {
+            console.log('Missing recommendation data in webhook payload');
+            break;
+          }
+          
+          try {
+            const recommendationType = recommendation.recommendation_type === 'new_index' 
+              ? 'new index' 
+              : (recommendation.recommendation_type || 'unknown');
+            const branchName = recommendation.branch?.name || 'unknown';
+            const tableName = recommendation.table_name || 'unknown';
+            const recommendationNumber = recommendation.number || 'unknown';
+            const title = recommendation.title || 'No title provided';
+            const htmlUrl = recommendation.html_url || '#';
+            
+            await sendSlackMessage(`:bulb: <${htmlUrl}|Schema recommendation #${recommendationNumber}>: ${title}\n• Type: ${recommendationType}\n• Table: \`${tableName}\`\n• Branch: \`${data.database}/${branchName}\``);
+          } catch (error) {
+            console.error('Error processing schema recommendation webhook:', error);
+            await sendSlackMessage(`:warning: Received schema recommendation webhook but encountered an error processing it.`);
+          }
         break;
 
         default:
