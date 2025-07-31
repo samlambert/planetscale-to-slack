@@ -95,7 +95,7 @@ app.post('/webhook', async (req, res) => {
         break;
 
         case 'webhook.test':
-          await sendSlackMessage(`Webhook test recieved from: \`${data.organization}/${data.database}\``);
+          await sendSlackMessage(`Webhook test received from: \`${data.organization}/${data.database}\``);
         break;
 
         case 'branch.schema_recommendation':
@@ -116,6 +116,7 @@ app.post('/webhook', async (req, res) => {
             const htmlUrl = recommendation.html_url || '#';
             
             await sendSlackMessage(`:bulb: <${htmlUrl}|Schema recommendation #${recommendationNumber}>: ${title}\n• Type: ${recommendationType}\n• Table: \`${tableName}\`\n• Branch: \`${data.database}/${branchName}\``);
+            console.log(`Successfully processed schema recommendation webhook for ${data.database}/${branchName}`);
           } catch (error) {
             console.error('Error processing schema recommendation webhook:', error);
             await sendSlackMessage(`:warning: Received schema recommendation webhook but encountered an error processing it.`);
