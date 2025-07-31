@@ -98,6 +98,12 @@ app.post('/webhook', async (req, res) => {
           await sendSlackMessage(`Webhook test recieved from: \`${data.organization}/${data.database}\``);
         break;
 
+        case 'branch.schema_recommendation':
+          const recommendation = data.resource;
+          const recommendationType = recommendation.recommendation_type === 'new_index' ? 'new index' : recommendation.recommendation_type;
+          await sendSlackMessage(`:bulb: <${recommendation.html_url}|Schema recommendation #${recommendation.number}>: ${recommendation.title}\n• Type: ${recommendationType}\n• Table: \`${recommendation.table_name}\`\n• Branch: \`${data.database}/${recommendation.branch.name}\``);
+        break;
+
         default:
             console.log(`Received an unknown event type: ${event.type}`);
         break;
